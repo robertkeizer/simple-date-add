@@ -30,5 +30,5 @@ npm install -g simple-date-add
 
 **Example**: Take the output of [ifstat-json](https://github.com/robertkeizer/ifstat-json) and expand the output.
 ```
-$ ifstat-json | simple-date-add
+$ ifstat-json | simple-date-add -d date
 ```
