@@ -1,0 +1,10 @@
+{
+	"name": "simple-date-add",
+	"version": "0.0.1",
+	"keywords": "cli date es elasticsearch transform manipulate",
+	"description": "Takes JSON data with date. Adds fields such as 'dayOfWeek'.",
+        "repository": {
+                "type": "git",
+                "url": "https://github.com/robertkeizer/simple-date-add.git"
+        }
+}
