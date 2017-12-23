@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+const program = require( "commander" )
+const readline = require( "readline" );
+
+program.version( "0.0.1" )
+	.option( "-d, --datefield [datefield]", "The property that contains the date object." )
+	.option( "-i, --ignore", "Ignore inputs that don't contain datefield; ( Don't die )" )
+	.parse( process.argv );
+
+
+// Required datefield.
+if( !program.datefield ){
+	program.outputHelp();
+	process.exit(1);
+}
+
+const handleFatalError = function( err ){
+	console.log( err );
+	process.exit(1);
+};
+
+const rl = readline.createInterface( {
+	input: process.stdin
+} );
+
+const weekdays = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ];
+const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+rl.on( "line", (line) => {
+	try{
+		let _obj = JSON.parse(line);
+
+		if( !_obj[program.datefield] ){
+			if( !program.ignore ){
+				return handleFatalError( "Input didn't have datefield: " + JSON.stringify( _obj ) );
+			}
+			// Don't bother processing this one; We have the ignore flag.
+			return;
+		}
+
+		const _date = new Date( _obj[program.datefield] );
+
+		_obj[program.datefield + "_expanded"] = {
+			month: months[_date.getMonth()],
+			dayOfMonth: _date.getDate( ),
+			dayOfWeek: weekdays[_date.getDay()],
+			year: _date.getFullYear( ),
+			hour: _date.getHours(),
+			minute: _date.getMinutes(),
+			seconds: _date.getSeconds()
+		};
+	
+		console.log( JSON.stringify( _obj ) );	
+
+	}catch( err ){
+		return handleFatalError(err);
+	}
+});
